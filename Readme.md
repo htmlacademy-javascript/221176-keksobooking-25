@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Александр Тарасюк](https://up.htmlacademy.ru/javascript/25/user/221176).
-* Наставник: `Неизвестно`.
+* Наставник: [Владислав Зубко](https://htmlacademy.ru/profile/whatislove).
 
 ---
 
