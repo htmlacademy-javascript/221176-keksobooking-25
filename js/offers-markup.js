@@ -11,7 +11,7 @@ const roomsLabel = (roomsCount) => {
     return 'комната';
   }
   return roomsCount <= 4 ? 'комнаты' : 'комнат';
-}
+};
 
 const mapCanvas = document.querySelector('#map-canvas');
 
@@ -38,7 +38,7 @@ const renderOffer = ({offer}) => {
   }
 
   const featureList = offerElement.querySelectorAll('.popup__feature');
-  const modifiers = offer.features.map((feature) => 'popup__feature--' + feature);
+  const modifiers = offer.features.map((feature) => `popup__feature--${feature}`);
   featureList.forEach((featureListItem) => {
     const modifier = featureListItem.classList[1];
     if (!modifiers.includes(modifier)) {
@@ -56,6 +56,6 @@ const renderOffer = ({offer}) => {
 
   templatePhoto.remove();
   mapCanvas.appendChild(offerElement);
-}
+};
 
 export { renderOffer };
