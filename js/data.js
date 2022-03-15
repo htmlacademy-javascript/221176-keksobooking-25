@@ -58,6 +58,6 @@ const makeOffer = () => {
   };
 };
 
-const makeArrayOfOffers = (count) => Array.from({length: count}, makeOffer);
+const makeOffersArray = (count) => Array.from({length: count}, makeOffer);
 
-export { makeArrayOfOffers };
+export { makeOffersArray };
