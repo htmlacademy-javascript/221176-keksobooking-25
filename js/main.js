@@ -1,3 +1,5 @@
-import { makeArrayOfOffers } from './data.js';
+import { makeOffersArray } from './data.js';
+import { renderOffer } from './offers-markup.js';
 
-makeArrayOfOffers(10);
+const offers = makeOffersArray(1);
+renderOffer(offers[0]);
