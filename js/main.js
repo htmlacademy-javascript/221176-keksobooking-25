@@ -1,6 +1,7 @@
 import { makeOffersArray } from './data.js';
 import { renderOffer } from './offers-markup.js';
 import { setFormsState } from './forms.js';
+import './validation.js';
 
 setFormsState(true);
 
