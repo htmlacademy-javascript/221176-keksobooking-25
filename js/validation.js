@@ -1,6 +1,4 @@
-import { PRICES } from './forms.js';
-
-const MAX_PRICE = 100000;
+import { PRICES, MAX_PRICE } from './settings.js';
 
 const offerForm = document.querySelector('.ad-form');
 
