@@ -1,17 +1,14 @@
-const FORM_CLASS_NAMES = ['ad-form', 'map__filters'];
+import { PRICES } from './settings.js';
+import { setSliderState } from './slider.js';
+import './validation.js';
 
-const PRICES = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000
-};
+const FORM_CLASS_NAMES = ['ad-form', 'map__filters'];
 
 const typeElement = document.querySelector('#type');
 const priceElement = document.querySelector('#price');
 const timeInElement = document.querySelector('#timein');
 const timeOutElement = document.querySelector('#timeout');
+const addressElement = document.querySelector('#address');
 
 const setStateToAttrDisabled = (element, state) => {
   for (let i = 0; i < element.children.length; i++) {
@@ -36,6 +33,7 @@ const setStateToForm = (formClassName, state) => {
     form.classList.add('ad-form--disabled');
   }
   setStateToAttrDisabled(form, !state);
+  setSliderState(state);
 };
 
 const setFormsState = (state) => {
@@ -60,9 +58,13 @@ const onTimeChange = (evt) => {
   }
 };
 
+const setAddress = (location) => {
+  addressElement.value = `${location.lat.toFixed(5)}, ${location.lng.toFixed(5)}`;
+};
+
+
 typeElement.addEventListener('change', onTypeChange);
 timeInElement.addEventListener('change', onTimeChange);
 timeOutElement.addEventListener('change', onTimeChange);
 
-export {setFormsState, PRICES};
-
+export {setFormsState, setAddress };

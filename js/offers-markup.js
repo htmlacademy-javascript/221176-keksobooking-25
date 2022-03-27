@@ -1,10 +1,4 @@
-const typesView = {
-  'flat': 'Квартира',
-  'bungalow': 'Бунгало',
-  'house': 'Дом',
-  'palace': 'Дворец',
-  'hotel': 'Отель'
-};
+import { TYPES } from './settings.js';
 
 const roomsLabel = (roomsCount) => {
   if (roomsCount === 1) {
@@ -13,20 +7,18 @@ const roomsLabel = (roomsCount) => {
   return roomsCount <= 4 ? 'комнаты' : 'комнат';
 };
 
-const mapCanvas = document.querySelector('#map-canvas');
-
 const similarOfferTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
-const renderOffer = ({offer}) => {
+const createOfferPopup = ({offer}) => {
 
   const offerElement = similarOfferTemplate.cloneNode(true);
 
   offerElement.querySelector('.popup__title').textContent = offer.title;
   offerElement.querySelector('.popup__text--address').textContent = offer.address;
   offerElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-  offerElement.querySelector('.popup__type').textContent = typesView[offer.type];
+  offerElement.querySelector('.popup__type').textContent = TYPES[offer.type];
   offerElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${roomsLabel(offer.rooms)} для ${offer.guests} гостей`;
 
   const elementDescription = offerElement.querySelector('.popup__description');
@@ -55,7 +47,8 @@ const renderOffer = ({offer}) => {
   });
 
   templatePhoto.remove();
-  mapCanvas.appendChild(offerElement);
+
+  return offerElement;
 };
 
-export { renderOffer };
+export { createOfferPopup };
