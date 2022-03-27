@@ -8,6 +8,7 @@ const typeElement = document.querySelector('#type');
 const priceElement = document.querySelector('#price');
 const timeInElement = document.querySelector('#timein');
 const timeOutElement = document.querySelector('#timeout');
+const addressElement = document.querySelector('#address');
 
 const setStateToAttrDisabled = (element, state) => {
   for (let i = 0; i < element.children.length; i++) {
@@ -57,8 +58,13 @@ const onTimeChange = (evt) => {
   }
 };
 
+const setAddress = (location) => {
+  addressElement.value = `${location.lat.toFixed(5)}, ${location.lng.toFixed(5)}`;
+};
+
+
 typeElement.addEventListener('change', onTypeChange);
 timeInElement.addEventListener('change', onTimeChange);
 timeOutElement.addEventListener('change', onTimeChange);
 
-export {setFormsState};
+export {setFormsState, setAddress };

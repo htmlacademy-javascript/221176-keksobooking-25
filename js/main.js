@@ -1,8 +1,9 @@
+import { createMarker } from './map.js';
 import { makeOffersArray } from './data.js';
-import { renderOffer } from './offers-markup.js';
-import { setFormsState } from './forms.js';
+import { createOfferPopup } from './offers-markup.js';
 
-setFormsState(true);
+const offers = makeOffersArray(10);
 
-const offers = makeOffersArray(1);
-renderOffer(offers[0]);
+offers.forEach((offer) => {
+  createMarker(offer.location, createOfferPopup(offer));
+});
