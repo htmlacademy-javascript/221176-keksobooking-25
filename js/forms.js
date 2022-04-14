@@ -102,16 +102,17 @@ const resetOfferForm = () => {
   });
 };
 
-const closeMessage = () => {
-  document.removeEventListener('keydown', onMessageEscKeydown);
-  message.remove();
-};
-
 const onMessageEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
+    // eslint-disable-next-line no-use-before-define
     closeMessage();
   }
+};
+
+const closeMessage = () => {
+  document.removeEventListener('keydown', onMessageEscKeydown);
+  message.remove();
 };
 
 const showSendingResultMessage = (template) => {
