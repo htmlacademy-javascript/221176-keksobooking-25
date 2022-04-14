@@ -1,7 +1,7 @@
 import { createOfferPopup } from './offers-markup.js';
 import { createMarker } from './map.js';
 import { getData } from './api.js';
-import { showMessage } from './forms.js';
+import { showMessage, setOfferFormSubmit } from './forms.js';
 
 const MAX_SIMILAR_OFFERS = 10;
 
@@ -10,3 +10,5 @@ getData((offers) => {
     createMarker(offer.location, createOfferPopup(offer));
   });
 }, showMessage);
+
+setOfferFormSubmit(() => {});

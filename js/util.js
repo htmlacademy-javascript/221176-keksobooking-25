@@ -15,4 +15,6 @@ const getRandomFloat = (min, max, digits) => {
   return +result.toFixed(digits);
 };
 
-export {getRandomInt, getRandomFloat};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomInt, getRandomFloat, isEscapeKey};
