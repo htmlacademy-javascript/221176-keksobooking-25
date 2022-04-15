@@ -30,13 +30,19 @@ const createOfferPopup = ({offer}) => {
   }
 
   const featureList = offerElement.querySelectorAll('.popup__feature');
-  const modifiers = offer.features.map((feature) => `popup__feature--${feature}`);
-  featureList.forEach((featureListItem) => {
-    const modifier = featureListItem.classList[1];
-    if (!modifiers.includes(modifier)) {
+  if (Object.hasOwn(offer, 'features')) {
+    const modifiers = offer.features.map((feature) => `popup__feature--${feature}`);
+    featureList.forEach((featureListItem) => {
+      const modifier = featureListItem.classList[1];
+      if (!modifiers.includes(modifier)) {
+        featureListItem.remove();
+      }
+    });
+  } else {
+    featureList.forEach((featureListItem) => {
       featureListItem.remove();
-    }
-  });
+    });
+  }
 
   const offerPhotos = offerElement.querySelector('.popup__photos');
   const templatePhoto = offerPhotos.querySelector('.popup__photo');

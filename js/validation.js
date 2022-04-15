@@ -51,7 +51,4 @@ pristine.addValidator(roomsField, validateGuests, getGuestsErrorMessage);
 pristine.addValidator(guestsField, validateGuests, getGuestsErrorMessage);
 pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
 
-offerForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
+export { pristine };

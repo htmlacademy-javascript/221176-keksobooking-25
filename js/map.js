@@ -58,4 +58,16 @@ const createMarker = (location, popup) => {
     .bindPopup(popup);
 };
 
-export { createMarker };
+const setDefaultPosition = () => {
+  map.setView(DEFAULT_LOCATION, 12);
+  mainPinMarker.setLatLng(DEFAULT_LOCATION);
+  setAddress(DEFAULT_LOCATION);
+};
+
+
+const resetMap = () => {
+  markerGroup.clearLayers();
+  setDefaultPosition();
+};
+
+export { createMarker, resetMap };
