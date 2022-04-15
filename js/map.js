@@ -64,10 +64,13 @@ const setDefaultPosition = () => {
   setAddress(DEFAULT_LOCATION);
 };
 
+const removeMarkers = () => {
+  markerGroup.clearLayers();
+};
 
 const resetMap = () => {
-  markerGroup.clearLayers();
+  removeMarkers();
   setDefaultPosition();
 };
 
-export { createMarker, resetMap };
+export { createMarker, removeMarkers, resetMap };
