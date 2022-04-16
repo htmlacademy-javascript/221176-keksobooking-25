@@ -4,7 +4,7 @@ import { createOfferPopup } from './offers-markup.js';
 import { showMessage, setOfferFormSubmit } from './forms.js';
 import { getData } from './api.js';
 import './filter.js';
-
+import './images.js';
 
 getData((offers) => {
   offers.slice(0, MAX_SIMILAR_OFFERS).forEach((offer) => {
