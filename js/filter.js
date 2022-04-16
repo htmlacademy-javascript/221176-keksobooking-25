@@ -1,8 +1,9 @@
-import { MAX_SIMILAR_OFFERS, PRICE_FILTER } from './settings.js';
+import { MAX_SIMILAR_OFFERS, PRICE_FILTER, MARKERS_RERENDER_DELAY } from './settings.js';
 import { createMarker, removeMarkers } from './map.js';
 import { createOfferPopup } from './offers-markup.js';
 import { showMessage } from './forms.js';
 import { getData } from './api.js';
+import { debounce } from './util.js';
 
 const mapFilterForm = document.querySelector('.map__filters');
 const filterElements = mapFilterForm.querySelectorAll('.map__filter');
@@ -49,7 +50,7 @@ const filterOffers = (offers, filter) => offers.filter(({offer}) => {
   return true;
 });
 
-const onFilterChange = () => {
+const changeSimilarOffers = () => {
   removeMarkers();
   const currentFilter = getFilter();
   getData((offers) => {
@@ -57,6 +58,12 @@ const onFilterChange = () => {
       createMarker(offer.location, createOfferPopup(offer));
     });
   }, showMessage);
+};
+
+const applyFilter = debounce(() => changeSimilarOffers(), MARKERS_RERENDER_DELAY);
+
+const onFilterChange = () => {
+  applyFilter();
 };
 
 filterElements.forEach((filterElement) => {
