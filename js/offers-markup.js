@@ -46,11 +46,13 @@ const createOfferPopup = ({offer}) => {
 
   const offerPhotos = offerElement.querySelector('.popup__photos');
   const templatePhoto = offerPhotos.querySelector('.popup__photo');
-  offer.photos.forEach((photo) => {
-    const photoElement = templatePhoto.cloneNode(true);
-    photoElement.src = photo;
-    offerPhotos.appendChild(photoElement);
-  });
+  if (Object.hasOwn(offer, 'photos')) {
+    offer.photos.forEach((photo) => {
+      const photoElement = templatePhoto.cloneNode(true);
+      photoElement.src = photo;
+      offerPhotos.appendChild(photoElement);
+    });
+  }
 
   templatePhoto.remove();
 

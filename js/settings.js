@@ -1,3 +1,5 @@
+const MAX_SIMILAR_OFFERS = 10;
+
 const TYPES = {
   'flat': 'Квартира',
   'bungalow': 'Бунгало',
@@ -21,4 +23,10 @@ const DEFAULT_LOCATION = {
   lng: 139.69171,
 };
 
-export {TYPES, PRICES, MAX_PRICE, DEFAULT_LOCATION};
+const PRICE_FILTER = {
+  'low': (n) => n < 10000,
+  'middle': (n) => n >= 1000 && n < 50000,
+  'high': (n) => n >= 50000
+};
+
+export {MAX_SIMILAR_OFFERS, TYPES, PRICES, MAX_PRICE, DEFAULT_LOCATION, PRICE_FILTER};
