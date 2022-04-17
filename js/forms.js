@@ -1,13 +1,15 @@
-import { PRICES } from './settings.js';
+import { MAX_SIMILAR_OFFERS, PRICES, ALERT_SHOW_TIME, MAIN_FORM_CLASS_NAME, FILTER_FORM_CLASS_NAME } from './const.js';
 import { setSliderState } from './slider.js';
 import { sendData } from './api.js';
 import { pristine } from './validation.js';
 import { isEscapeKey } from './util.js';
-import { resetMap } from './map.js';
+import { resetMap, createMarker } from './map.js';
+import { resetFilter } from './filter.js';
+import { resetImages } from './images.js';
+import { getData } from './api.js';
+import { createOfferPopup } from './offers-markup.js';
 
-const ALERT_SHOW_TIME = 5000;
-
-const FORM_CLASS_NAMES = ['ad-form', 'map__filters'];
+const FORM_CLASS_NAMES = [MAIN_FORM_CLASS_NAME, FILTER_FORM_CLASS_NAME];
 
 const offerForm = document.querySelector('.ad-form');
 
@@ -68,6 +70,8 @@ const setFormsState = (state) => {
   });
 };
 
+const setFormState = (formClassName, state) => setStateToForm(`.${formClassName}`, state);
+
 const onTypeChange = () => {
   priceElement.placeholder = PRICES[typeElement.value];
 };
@@ -86,40 +90,6 @@ const onTimeChange = (evt) => {
 
 const setAddress = (location) => {
   addressElement.value = `${location.lat.toFixed(5)}, ${location.lng.toFixed(5)}`;
-};
-
-const resetOfferForm = () => {
-  titleElement.value = '';
-  typeElement.value = 'flat';
-  priceElement.value = 1000;
-  timeInElement.value = '12:00';
-  timeOutElement.value = '12:00';
-  roomNumberElement.value = '1';
-  capacityElement.value = '3';
-  descriptionElemnt.value = '';
-  featuresElements.forEach((featureElement) => {
-    featureElement.checked = false;
-  });
-};
-
-const onMessageEscKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    // eslint-disable-next-line no-use-before-define
-    closeMessage();
-  }
-};
-
-const closeMessage = () => {
-  document.removeEventListener('keydown', onMessageEscKeydown);
-  message.remove();
-};
-
-const showSendingResultMessage = (template) => {
-  message = template.cloneNode(true);
-  message.addEventListener('click', closeMessage);
-  document.addEventListener('keydown', onMessageEscKeydown);
-  document.body.append(message);
 };
 
 const showMessage = () => {
@@ -144,22 +114,72 @@ const showMessage = () => {
   }, ALERT_SHOW_TIME);
 };
 
+const resetOfferForm = () => {
+  titleElement.value = '';
+  typeElement.value = 'flat';
+  priceElement.value = 1000;
+  timeInElement.value = '12:00';
+  timeOutElement.value = '12:00';
+  roomNumberElement.value = '1';
+  capacityElement.value = '3';
+  descriptionElemnt.value = '';
+  featuresElements.forEach((featureElement) => {
+    featureElement.checked = false;
+  });
+  resetImages();
+};
+
+const resetForms = () => {
+  resetOfferForm();
+  resetFilter();
+  setFormState(FILTER_FORM_CLASS_NAME, false);
+  resetMap(() => {
+    getData((offers) => {
+      offers.slice(0, MAX_SIMILAR_OFFERS).forEach((offer) => {
+        createMarker(offer.location, createOfferPopup(offer));
+      });
+      setFormState(FILTER_FORM_CLASS_NAME, true);
+    }, showMessage);
+  });
+};
+
+const onMessageEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    // eslint-disable-next-line no-use-before-define
+    closeMessage();
+  }
+};
+
+const closeMessage = () => {
+  document.removeEventListener('keydown', onMessageEscKeydown);
+  message.remove();
+};
+
+const showSendingResultMessage = (template) => {
+  message = template.cloneNode(true);
+  message.addEventListener('click', closeMessage);
+  document.addEventListener('keydown', onMessageEscKeydown);
+  document.body.append(message);
+};
+
 typeElement.addEventListener('change', onTypeChange);
 timeInElement.addEventListener('change', onTimeChange);
 timeOutElement.addEventListener('change', onTimeChange);
+
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
-  resetOfferForm();
+  resetForms();
 });
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
-  submitButton.textContent = 'Сохраняю...';
+  submitButton.textContent = 'Опубликовываю...';
 };
 
 const unblockSubmitButton = () => {
   submitButton.disabled = false;
-  submitButton.textContent = 'Сохранить';
+  submitButton.textContent = 'Опубликовать';
 };
 
 const setOfferFormSubmit = (onSuccess) => {
@@ -174,8 +194,7 @@ const setOfferFormSubmit = (onSuccess) => {
           onSuccess();
           showSendingResultMessage(successMessageTemplate);
           unblockSubmitButton();
-          resetMap();
-          resetOfferForm();
+          resetForms();
         },
         () => {
           showSendingResultMessage(errorMessageTemplate);
@@ -187,4 +206,4 @@ const setOfferFormSubmit = (onSuccess) => {
   });
 };
 
-export { setFormsState, setAddress, showMessage, setOfferFormSubmit };
+export { setFormsState, setFormState, setAddress, showMessage, setOfferFormSubmit };

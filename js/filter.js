@@ -1,13 +1,22 @@
-import { MAX_SIMILAR_OFFERS, PRICE_FILTER, MARKERS_RERENDER_DELAY } from './settings.js';
+import { MAX_SIMILAR_OFFERS, PRICE_FILTER, MARKERS_RERENDER_DELAY, FILTER_FORM_CLASS_NAME } from './const.js';
 import { createMarker, removeMarkers } from './map.js';
 import { createOfferPopup } from './offers-markup.js';
-import { showMessage } from './forms.js';
+import { setFormState, showMessage } from './forms.js';
 import { getData } from './api.js';
 import { debounce } from './util.js';
 
 const mapFilterForm = document.querySelector('.map__filters');
 const filterElements = mapFilterForm.querySelectorAll('.map__filter');
 const filterCheckboxElements = mapFilterForm.querySelectorAll('.map__checkbox');
+
+const resetFilter = () => {
+  for (const filterElement of filterElements) {
+    filterElement.value = 'any';
+  }
+  for (const filterCheckboxElement of filterCheckboxElements) {
+    filterCheckboxElement.checked = false;
+  }
+};
 
 const getFilter = () => {
   const filter = {};
@@ -51,12 +60,14 @@ const filterOffers = (offers, filter) => offers.filter(({offer}) => {
 });
 
 const changeSimilarOffers = () => {
+  setFormState(FILTER_FORM_CLASS_NAME, false);
   removeMarkers();
   const currentFilter = getFilter();
   getData((offers) => {
     filterOffers(offers, currentFilter).slice(0, MAX_SIMILAR_OFFERS).forEach((offer) => {
       createMarker(offer.location, createOfferPopup(offer));
     });
+    setFormState(FILTER_FORM_CLASS_NAME, true);
   }, showMessage);
 };
 
@@ -73,3 +84,5 @@ filterElements.forEach((filterElement) => {
 filterCheckboxElements.forEach((filterElement) => {
   filterElement.addEventListener('change', onFilterChange);
 });
+
+export { resetFilter };

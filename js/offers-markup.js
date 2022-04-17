@@ -1,4 +1,4 @@
-import { TYPES } from './settings.js';
+import { TYPES } from './const.js';
 
 const roomsLabel = (roomsCount) => {
   if (roomsCount === 1) {

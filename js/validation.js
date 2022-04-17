@@ -1,4 +1,4 @@
-import { PRICES, MAX_PRICE } from './settings.js';
+import { PRICES, MAX_PRICE } from './const.js';
 
 const offerForm = document.querySelector('.ad-form');
 
@@ -23,29 +23,23 @@ const roomsOption = {
   '100': ['0']
 };
 
-function validateGuests () {
-  return roomsOption[roomsField.value].includes(guestsField.value);
-}
+const validateGuests = () => roomsOption[roomsField.value].includes(guestsField.value);
 
-function getGuestsErrorMessage () {
-  return 'Для выбранного количества гостей указанное количество комнат недоступно';
-}
+const getGuestsErrorMessage = () => 'Для выбранного количества гостей указанное количество комнат недоступно';
 
-function validatePrice (value) {
-  return value !== '' && PRICES[typeField.value] < value && value < MAX_PRICE;
-}
+const validatePrice = (value) => value !== '' && PRICES[typeField.value] <= parseInt(value, 10) && parseInt(value, 10) <= MAX_PRICE;
 
-function getPriceErrorMessage () {
+const getPriceErrorMessage = () => {
   if (priceField.value === '') {
     return 'Обязательное поле';
   }
-  if (PRICES[typeField.value] > priceField.value) {
+  if (PRICES[typeField.value] > parseInt(priceField.value, 10)) {
     return `Минимальная цена ${PRICES[typeField.value]}`;
   }
-  if (priceField.value > MAX_PRICE) {
+  if (parseInt(priceField.value, 10) > MAX_PRICE) {
     return `Максимальная цена ${MAX_PRICE}`;
   }
-}
+};
 
 pristine.addValidator(roomsField, validateGuests, getGuestsErrorMessage);
 pristine.addValidator(guestsField, validateGuests, getGuestsErrorMessage);
