@@ -1,23 +1,5 @@
-import { setFormsState, setAddress } from './forms.js';
-import { DEFAULT_LOCATION } from './settings.js';
-
-setFormsState(false);
-
-const map = L.map('map-canvas')
-  .on('load', () => {
-    setFormsState(true);
-    setAddress(DEFAULT_LOCATION);
-  })
-  .setView(DEFAULT_LOCATION, 12);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
-
-const markerGroup = L.layerGroup().addTo(map);
+import { DEFAULT_LOCATION } from './const.js';
+import { setAddress } from './forms.js';
 
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -31,19 +13,38 @@ const pinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const mainPinMarker = L.marker(
-  DEFAULT_LOCATION,
-  {
-    draggable: true,
-    icon: mainPinIcon,
-  }
-);
+const mapProperties = {};
 
-mainPinMarker.addTo(map);
+const initMap = (cb) => {
+  mapProperties.map = L.map('map-canvas')
+    .on('load', () => {
+      cb();
+    })
+    .setView(DEFAULT_LOCATION, 12);
 
-mainPinMarker.on('moveend', (evt) => {
-  setAddress(evt.target.getLatLng());
-});
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  ).addTo(mapProperties.map);
+
+  mapProperties.markerGroup = L.layerGroup().addTo(mapProperties.map);
+
+  mapProperties.mainPinMarker = L.marker(
+    DEFAULT_LOCATION,
+    {
+      draggable: true,
+      icon:  mainPinIcon,
+    }
+  );
+
+  mapProperties.mainPinMarker.addTo(mapProperties.map);
+
+  mapProperties.mainPinMarker.on('moveend', (evt) => {
+    setAddress(evt.target.getLatLng());
+  });
+};
 
 const createMarker = (location, popup) => {
   const marker = L.marker(
@@ -54,23 +55,24 @@ const createMarker = (location, popup) => {
   );
 
   marker
-    .addTo(markerGroup)
+    .addTo(mapProperties.markerGroup)
     .bindPopup(popup);
 };
 
 const setDefaultPosition = () => {
-  map.setView(DEFAULT_LOCATION, 12);
-  mainPinMarker.setLatLng(DEFAULT_LOCATION);
+  mapProperties.map.setView(DEFAULT_LOCATION, 12);
+  mapProperties.mainPinMarker.setLatLng(DEFAULT_LOCATION);
   setAddress(DEFAULT_LOCATION);
 };
 
 const removeMarkers = () => {
-  markerGroup.clearLayers();
+  mapProperties.markerGroup.clearLayers();
 };
 
-const resetMap = () => {
+const resetMap = (cb) => {
   removeMarkers();
   setDefaultPosition();
+  cb();
 };
 
-export { createMarker, removeMarkers, resetMap };
+export { initMap, createMarker, removeMarkers, resetMap };

@@ -1,4 +1,4 @@
-import { PRICES, MAX_PRICE } from './settings.js';
+import { PRICES, MAX_PRICE } from './const.js';
 
 const SLIDER_DEFAULT_SETTINGS = {
   step: 100,

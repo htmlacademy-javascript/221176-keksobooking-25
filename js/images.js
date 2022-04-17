@@ -31,6 +31,15 @@ const getPhotoImage = () => {
   return photo;
 };
 
+const resetImages = () => {
+  avatarFileChooser.value = '';
+  avatarPreview.src = 'img/muffin-grey.svg';
+  photoFileChooser.value = '';
+  getPhotoImage().remove();
+};
+
 photoFileChooser.addEventListener('change', () => {
   chooseFile(photoFileChooser, getPhotoImage());
 });
+
+export { resetImages };
