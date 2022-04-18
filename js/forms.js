@@ -44,7 +44,7 @@ const setStateToAttrDisabled = (element, state) => {
       setStateToAttrDisabled(child, state);
     } else {
       if (state) {
-        child.setAttribute('disabled', true);
+        child.setAttribute('disabled', 'disabled');
       } else {
         child.removeAttribute('disabled');
       }
