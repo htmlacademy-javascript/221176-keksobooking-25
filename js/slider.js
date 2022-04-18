@@ -44,7 +44,7 @@ const setSliderState = (state) => {
   if (state) {
     sliderElement.removeAttribute('disabled');
   } else {
-    sliderElement.setAttribute('disabled', true);
+    sliderElement.setAttribute('disabled', 'disabled');
   }
 };
 
