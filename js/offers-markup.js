@@ -1,6 +1,6 @@
 import { TYPES } from './const.js';
 
-const roomsLabel = (roomsCount) => {
+const GetRoomsLabel = (roomsCount) => {
   if (roomsCount === 1) {
     return 'комната';
   }
@@ -19,7 +19,7 @@ const createOfferPopup = ({offer}) => {
   offerElement.querySelector('.popup__text--address').textContent = offer.address;
   offerElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
   offerElement.querySelector('.popup__type').textContent = TYPES[offer.type];
-  offerElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${roomsLabel(offer.rooms)} для ${offer.guests} гостей`;
+  offerElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} ${GetRoomsLabel(offer.rooms)} для ${offer.guests} гостей`;
 
   const elementDescription = offerElement.querySelector('.popup__description');
   if (offer.description === '') {
